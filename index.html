@@ -30,7 +30,7 @@
   <div class="card">
     <h2>Step 1 — Get Your FREE Draft</h2>
     <p>Click below, answer a few questions, and get your lawyer-formatted draft instantly by email.</p>
-    <a class="cta" href="YOUR_GFORM_LINK_HERE" target="_blank" rel="noopener">Start Free RFE/NOID Letter</a>
+    <a class="cta" href="https://docs.google.com/document/d/1ec7u47qdAFp4Z4QazOPdRXB01OIB5Mpjz5UC1yVpFiE/edit?usp=sharing" target="_blank" rel="noopener">Start Free RFE/NOID Letter</a>
   </div>
 
   <div class="card">
@@ -66,7 +66,7 @@
 </footer>
 
 <script>document.getElementById('y').textContent=new Date().getFullYear()</script>
-<script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
+<script src="AfPYC5X8SuGxg9-OSVSFTNIP0xp8RPTBVSrrwF5SPB4fNjaDZ0B55Y5huMiiuWCJvW6eHRJLINN0F69l"></script>
 <script>
 function renderBtn(id, price, desc){
   paypal.Buttons({
@@ -75,7 +75,7 @@ function renderBtn(id, price, desc){
     },
     onApprove: function(data, actions){
       return actions.order.capture().then(function(){
-        window.location.href = "YOUR_THANKYOU_PAGE_URL";
+        window.location.href = "https://github.com/ettrickc-dev/rfe-noid-generator/blob/main/thankyou.html";
       });
     }
   }).render(id);
