@@ -94,7 +94,7 @@ function renderBtn(id, price, desc){
       purchase_units:[{amount:{value:String(price)}, description:desc}]
     }),
     onApprove: (data, actions) => actions.order.capture().then(()=>{
-      window.location.href = "https://YOUR_GITHUB_USERNAME.github.io/rfe-noid-generator/thankyou.html";
+      window.location.href = "https://ettrickc-dev.github.io/rfe-noid-generator/thankyou.html";
     })
   }).render(id);
 }
