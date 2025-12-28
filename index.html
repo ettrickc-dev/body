@@ -1,97 +1,197 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Conversation Function Trainer (Logistics / Connection / Boundary / Venting / Identity)</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>5-Function Reflex Trainer (Real-Life Speed)</title>
   <style>
-    :root { --bg:#0b0f14; --card:#121826; --muted:#9aa4b2; --text:#e6edf3; --accent:#6ee7ff; --good:#4ade80; --bad:#fb7185; --warn:#fbbf24; }
-    * { box-sizing: border-box; }
-    body { margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial; background: radial-gradient(1200px 800px at 20% 10%, #132033 0%, var(--bg) 55%); color:var(--text); }
-    .wrap { max-width: 980px; margin: 0 auto; padding: 18px; }
-    .topbar { display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
-    .title { font-weight:800; letter-spacing:.2px; font-size: 18px; }
-    .subtitle { color:var(--muted); font-size: 13px; margin-top:4px; }
-    .row { display:grid; grid-template-columns: 1.25fr .75fr; gap: 14px; margin-top: 14px; }
-    @media (max-width: 900px){ .row{ grid-template-columns:1fr; } }
-    .card { background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); border: 1px solid rgba(255,255,255,.10); border-radius: 18px; padding: 14px; box-shadow: 0 14px 40px rgba(0,0,0,.30); }
-    .card h3 { margin: 0 0 8px; font-size: 14px; color: #d7e2ee; }
-    .mini { color:var(--muted); font-size: 12px; line-height: 1.35; }
-    .scenarioBox { border-radius: 16px; background: rgba(0,0,0,.28); border: 1px solid rgba(255,255,255,.08); padding: 14px; min-height: 120px; display:flex; flex-direction:column; gap: 10px; }
-    .who { display:flex; align-items:center; justify-content:space-between; gap:10px; color: var(--muted); font-size: 12px; }
-    .msg { font-size: 20px; line-height: 1.25; font-weight: 750; letter-spacing: .1px; }
-    .tag { font-size: 11px; padding: 6px 10px; border-radius: 999px; background: rgba(110,231,255,.12); color: var(--accent); border: 1px solid rgba(110,231,255,.25); }
-    .grid5 { display:grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 12px; }
-    @media (max-width: 900px){ .grid5{ grid-template-columns:1fr; } }
-    button { cursor:pointer; border:none; border-radius: 14px; padding: 12px 10px; font-weight: 800; color: var(--text); background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.10); transition: transform .05s ease, background .15s ease, border .15s ease; }
-    button:hover { background: rgba(255,255,255,.12); }
-    button:active { transform: translateY(1px); }
-    .btnGood { background: rgba(74,222,128,.12); border-color: rgba(74,222,128,.25); }
-    .btnBad { background: rgba(251,113,133,.12); border-color: rgba(251,113,133,.25); }
-    .btnWarn { background: rgba(251,191,36,.12); border-color: rgba(251,191,36,.25); }
-    .controls { display:grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-    @media (max-width: 900px){ .controls{ grid-template-columns:1fr; } }
-    .kv { display:flex; align-items:center; justify-content:space-between; gap: 10px; padding: 10px 12px; border-radius: 14px; background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.08); }
-    .kv span { color: var(--muted); font-size: 12px; }
-    .kv b { font-size: 14px; }
-    .pillrow { display:flex; gap:8px; flex-wrap:wrap; margin-top: 10px; }
-    .pill { display:flex; align-items:center; gap:8px; padding: 8px 10px; border-radius: 999px; background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.08); color: var(--muted); font-size: 12px; }
-    .pill input[type="checkbox"]{ transform: scale(1.15); }
-    .divider { height:1px; background: rgba(255,255,255,.10); margin: 12px 0; }
-    .result { border-radius: 16px; padding: 12px; background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.08); margin-top: 12px; display:none; }
-    .result.good { border-color: rgba(74,222,128,.30); }
-    .result.bad { border-color: rgba(251,113,133,.30); }
-    .result h4 { margin:0 0 6px; font-size: 13px; }
-    .result p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.35; }
-    .bigAnswer { margin-top: 10px; display:grid; gap: 10px; }
-    .answerRow { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
-    @media (max-width: 900px){ .answerRow { grid-template-columns:1fr; } }
-    .input { width:100%; border-radius: 14px; padding: 12px 12px; border: 1px solid rgba(255,255,255,.12); background: rgba(0,0,0,.25); color: var(--text); outline:none; font-weight: 700; }
-    .input::placeholder{ color: rgba(154,164,178,.75); font-weight: 600; }
-    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; padding: 2px 6px; border-radius: 8px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.10); color: var(--text); }
-    .footer { margin-top: 14px; color: var(--muted); font-size: 12px; line-height: 1.35; }
-    .tiny { font-size: 11px; color: rgba(154,164,178,.9); }
-    .modeTabs { display:flex; gap:8px; flex-wrap:wrap; margin-top: 8px; }
-    .modeTabs button { padding: 10px 12px; border-radius: 999px; font-weight: 900; }
-    .activeTab { background: rgba(110,231,255,.14); border-color: rgba(110,231,255,.28); }
-    .speakBtn { display:flex; align-items:center; justify-content:center; gap:8px; }
-    .meter { height: 8px; border-radius: 999px; background: rgba(255,255,255,.08); overflow:hidden; border: 1px solid rgba(255,255,255,.10); }
-    .meter > div { height:100%; width:0%; background: rgba(110,231,255,.70); }
+    :root{
+      --bg:#0b0f14; --card:#111827; --card2:#0f172a;
+      --txt:#e6edf3; --muted:#9aa4b2;
+      --accent:#6ee7ff; --good:#4ade80; --bad:#fb7185; --warn:#fbbf24;
+      --line:rgba(255,255,255,.10);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background: radial-gradient(1200px 800px at 20% 10%, #132033 0%, var(--bg) 55%);
+      color:var(--txt);
+    }
+    .wrap{max-width:1100px; margin:0 auto; padding:16px}
+    .top{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    }
+    .brand{display:flex; flex-direction:column; gap:4px}
+    .title{font-weight:900; letter-spacing:.2px; font-size:18px}
+    .subtitle{color:var(--muted); font-size:12.5px; line-height:1.35}
+    .kbd{
+      font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+      font-size:12px; padding:2px 6px; border-radius:8px;
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.10);
+      color:var(--txt);
+    }
+    .pillbar{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+    .pill{
+      display:flex; align-items:center; gap:8px;
+      padding:8px 10px; border-radius:999px;
+      background:rgba(0,0,0,.24); border:1px solid rgba(255,255,255,.10);
+      color:var(--muted); font-size:12px;
+    }
+    .pill b{color:var(--txt)}
+    .grid{display:grid; grid-template-columns:1.2fr .8fr; gap:14px; margin-top:14px}
+    @media(max-width:980px){.grid{grid-template-columns:1fr}}
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:18px; padding:14px;
+      box-shadow:0 14px 40px rgba(0,0,0,.30);
+    }
+    .card h3{margin:0 0 10px; font-size:14px; color:#d7e2ee}
+    .box{
+      border-radius:16px; background:rgba(0,0,0,.28);
+      border:1px solid rgba(255,255,255,.08);
+      padding:14px;
+    }
+    .scenarioTop{
+      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .tag{
+      font-size:11px; padding:6px 10px; border-radius:999px;
+      background:rgba(110,231,255,.10); color:var(--accent);
+      border:1px solid rgba(110,231,255,.25);
+    }
+    .tag.warn{background:rgba(251,191,36,.10); color:var(--warn); border-color:rgba(251,191,36,.25)}
+    .tag.good{background:rgba(74,222,128,.10); color:var(--good); border-color:rgba(74,222,128,.25)}
+    .msg{
+      font-size:22px; line-height:1.25; font-weight:900;
+      letter-spacing:.1px;
+      padding:12px; border-radius:14px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      min-height:86px;
+      display:flex; align-items:center;
+    }
+    .small{color:var(--muted); font-size:12px; line-height:1.35}
+    .divider{height:1px; background:var(--line); margin:12px 0}
+    .btnRow{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px}
+    @media(max-width:700px){.btnRow{grid-template-columns:1fr}}
+    button{
+      cursor:pointer; border:none;
+      border-radius:14px; padding:12px 10px;
+      font-weight:900; color:var(--txt);
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
+      transition:transform .05s ease, background .15s ease, border .15s ease;
+    }
+    button:hover{background:rgba(255,255,255,.12)}
+    button:active{transform:translateY(1px)}
+    .primary{background:rgba(74,222,128,.12); border-color:rgba(74,222,128,.25)}
+    .warn{background:rgba(251,191,36,.12); border-color:rgba(251,191,36,.25)}
+    .danger{background:rgba(251,113,133,.12); border-color:rgba(251,113,133,.25)}
+    .answers{
+      display:grid; grid-template-columns:repeat(5, 1fr);
+      gap:10px; margin-top:10px;
+    }
+    @media(max-width:980px){.answers{grid-template-columns:1fr}}
+    .meter{
+      height:10px; border-radius:999px;
+      background:rgba(255,255,255,.08);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .meter>div{height:100%; width:0%; background:rgba(110,231,255,.70)}
+    .result{
+      display:none;
+      border-radius:16px; padding:12px;
+      background:rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.10);
+      margin-top:10px;
+    }
+    .result.good{border-color:rgba(74,222,128,.30)}
+    .result.bad{border-color:rgba(251,113,133,.30)}
+    .result h4{margin:0 0 6px; font-size:13px}
+    .result p{margin:0; color:var(--muted); font-size:13px; line-height:1.35}
+    .input{
+      width:100%; border-radius:14px;
+      padding:12px 12px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.25);
+      color:var(--txt);
+      outline:none; font-weight:800;
+    }
+    .input::placeholder{color:rgba(154,164,178,.75); font-weight:700}
+    .twoCol{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    @media(max-width:900px){.twoCol{grid-template-columns:1fr}}
+    .hint{
+      border-radius:14px; padding:10px 12px;
+      background:rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--muted); font-size:12px; line-height:1.35;
+    }
+    .hotkeys{color:var(--muted); font-size:12px; line-height:1.35; margin-top:10px}
+    .switchRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+    .switch{
+      display:flex; align-items:center; gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      background:rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--muted); font-size:12px;
+    }
+    .switch input{transform:scale(1.15)}
+    .miniGrid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px}
+    @media(max-width:900px){.miniGrid{grid-template-columns:1fr}}
+    .select, .range{
+      width:100%; padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.25);
+      color:var(--txt); font-weight:800;
+      outline:none;
+    }
   </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="topbar">
-    <div>
-      <div class="title">Conversation Function Trainer</div>
-      <div class="subtitle">Train the 5-function reflex fast — works for text or speech. Keyboard: <span class="kbd">1</span>-<span class="kbd">5</span> to answer, <span class="kbd">N</span> next, <span class="kbd">Space</span> speak.</div>
+  <div class="top">
+    <div class="brand">
+      <div class="title">5-Function Reflex Trainer (Real-Life Speed)</div>
+      <div class="subtitle">
+        Train this reflex: <b>“What is this person DOING with this message?”</b><br/>
+        Hotkeys: <span class="kbd">1</span>-<span class="kbd">5</span> answer • <span class="kbd">N</span> next • <span class="kbd">Space</span> speak • <span class="kbd">R</span> repeat • <span class="kbd">Enter</span> check your reply
+      </div>
     </div>
-    <div class="kv" style="min-width:260px;">
-      <span>Mode</span>
-      <b id="modeLabel">Classify</b>
+    <div class="pillbar">
+      <div class="pill">Mode: <b id="modeLabel">Classify → Reply</b></div>
+      <div class="pill">Level: <b id="levelLabel">1</b></div>
+      <div class="pill">Streak: <b id="streak">0</b></div>
+      <div class="pill">Avg time: <b id="avgTime">—</b></div>
     </div>
   </div>
 
-  <div class="row">
+  <div class="grid">
     <!-- MAIN TRAINER -->
     <div class="card">
-      <h3>Live Scenario</h3>
-      <div class="scenarioBox">
-        <div class="who">
-          <div>
-            <span class="tag" id="speedTag">Speed: Normal</span>
-            <span class="tag" id="timerTag" style="margin-left:6px;">Timer: Off</span>
+      <h3>Live Scenario (2-Step: classify → 1-unit reply)</h3>
+      <div class="box">
+        <div class="scenarioTop">
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <span class="tag" id="speedTag">Speed: 1.00×</span>
+            <span class="tag warn" id="timerTag">Timer: Off</span>
+            <span class="tag good" id="stepTag">Step 1: Classify</span>
           </div>
-          <div class="tiny">Goal: Identify the function, then answer in 1 unit.</div>
-        </div>
-        <div class="msg" id="msgText">Click “Next” to begin.</div>
-
-        <div class="controls">
-          <button id="nextBtn" class="btnGood">Next Scenario (<span class="kbd">N</span>)</button>
-          <button id="speakBtn" class="speakBtn btnWarn">Speak It (<span class="kbd">Space</span>)</button>
+          <div class="small"><b>Decision tree:</b> Facts→Logistics • Warmth→Connection • Distance→Boundary • Stress→Venting • Self-definition→Identity</div>
         </div>
 
-        <div class="grid5" id="answerButtons">
+        <div class="msg" id="msg">Click “Next” to start.</div>
+
+        <div class="btnRow">
+          <button class="primary" id="nextBtn">Next (<span class="kbd">N</span>)</button>
+          <button class="warn" id="speakBtn">Speak (<span class="kbd">Space</span>)</button>
+        </div>
+
+        <div class="answers" id="answers">
           <button data-f="LOGISTICS">1) Logistics</button>
           <button data-f="CONNECTION">2) Connection</button>
           <button data-f="BOUNDARY">3) Boundary</button>
@@ -101,499 +201,636 @@
 
         <div class="result" id="resultBox">
           <h4 id="resultTitle">Result</h4>
-          <p id="resultExplain"></p>
+          <p id="resultWhy"></p>
+
           <div class="divider"></div>
-          <div class="bigAnswer">
-            <div class="answerRow">
-              <div>
-                <div class="mini"><b>Best “One-Unit” reply (memorize)</b></div>
-                <input class="input" id="bestReply" readonly />
-              </div>
-              <div>
-                <div class="mini"><b>Your reply (optional practice)</b></div>
-                <input class="input" id="yourReply" placeholder="Type your one-sentence reply…" />
+
+          <div class="twoCol">
+            <div>
+              <div class="small"><b>Best “one-unit” response (memorize)</b></div>
+              <input class="input" id="bestReply" readonly />
+              <div class="hint" style="margin-top:10px;">
+                <b>3 Hidden Questions check:</b><br/>
+                1) Understand? 2) Respect? 3) Steady?
               </div>
             </div>
-            <div class="mini" id="microCoach"></div>
+            <div>
+              <div class="small"><b>Your one-sentence response (practice)</b> <span class="small">(press <span class="kbd">Enter</span>)</span></div>
+              <input class="input" id="yourReply" placeholder="Type ONE sentence… (acknowledge OR plan OR respect)"/>
+              <div class="hint" style="margin-top:10px;" id="replyCoach">
+                <b>One-Unit Rule:</b> 1 sentence acknowledgment OR 1 sentence plan OR 1 sentence respect. Stop.
+              </div>
+            </div>
           </div>
+
+          <div class="divider"></div>
+          <div class="small"><b>Golden rules:</b> Don’t fix venting • Don’t pity identity • Don’t chase boundaries • Don’t add emotion to logistics • Don’t add logic to connection</div>
         </div>
 
         <div style="margin-top:12px;">
-          <div class="mini"><b>Progress</b></div>
+          <div class="small"><b>Progress</b> (toward next level)</div>
           <div class="meter"><div id="meterFill"></div></div>
-          <div class="pillrow">
-            <div class="pill">Streak: <b id="streak">0</b></div>
+          <div class="switchRow" style="margin-top:10px;">
             <div class="pill">Correct: <b id="correct">0</b></div>
             <div class="pill">Attempts: <b id="attempts">0</b></div>
-            <div class="pill">Avg Time: <b id="avgTime">—</b></div>
+            <div class="pill">Missed (timer): <b id="missed">0</b></div>
           </div>
         </div>
-      </div>
 
-      <div class="footer">
-        <b>Reflex Rule:</b> Identify the function → serve the function → stop. <br/>
-        <span class="tiny">This app ramps speed and time pressure so you can handle fast talkers.</span>
+        <div class="hotkeys">
+          <b>Fast drill:</b> Pressure Mode + Timer 5–7s + auto-speak ON → answer with <span class="kbd">1</span>-<span class="kbd">5</span> only.
+        </div>
       </div>
     </div>
 
-    <!-- SETTINGS / TRAINING -->
+    <!-- SETTINGS + DRILLS -->
     <div class="card">
-      <h3>Training Settings</h3>
+      <h3>Make it Seamless (fast, real life)</h3>
 
-      <div class="modeTabs">
-        <button id="tabClassify" class="activeTab">Classify</button>
-        <button id="tabReply">Reply Builder</button>
-        <button id="tabPressure">Pressure Mode</button>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="kv">
-        <span>Difficulty</span>
-        <b id="diffLabel">Level 1</b>
-      </div>
-      <div class="mini" style="margin:8px 0 10px;">
-        Level rises automatically as your streak grows: shorter time, faster speech, more ambiguous scenarios.
-      </div>
-
-      <div class="kv">
-        <span>Speech speed</span>
-        <b><span id="rateLabel">1.0×</span></b>
-      </div>
-      <input id="rate" type="range" min="0.7" max="1.6" step="0.05" value="1.0" style="width:100%; margin-top:10px;"/>
-
-      <div class="kv" style="margin-top:10px;">
-        <span>Timer (seconds)</span>
-        <b><span id="timeLabel">Off</span></b>
-      </div>
-      <input id="timer" type="range" min="0" max="12" step="1" value="0" style="width:100%; margin-top:10px;"/>
-
-      <div class="divider"></div>
-
-      <div class="mini"><b>Focus Functions</b> (turn off anything you want to drill)</div>
-      <div class="pillrow">
-        <label class="pill"><input type="checkbox" class="focus" value="LOGISTICS" checked/> Logistics</label>
-        <label class="pill"><input type="checkbox" class="focus" value="CONNECTION" checked/> Connection</label>
-        <label class="pill"><input type="checkbox" class="focus" value="BOUNDARY" checked/> Boundary</label>
-        <label class="pill"><input type="checkbox" class="focus" value="VENTING" checked/> Venting</label>
-        <label class="pill"><input type="checkbox" class="focus" value="IDENTITY" checked/> Identity</label>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="mini"><b>3 Hidden Questions Check</b> (use in real life)</div>
-      <div class="scenarioBox" style="min-height:auto;">
-        <div class="mini">Before you reply, silently ensure your reply answers:</div>
-        <div class="pillrow">
-          <div class="pill">✔ Understand</div>
-          <div class="pill">✔ Respect</div>
-          <div class="pill">✔ Steady</div>
+      <div class="box">
+        <div class="miniGrid">
+          <div>
+            <div class="small"><b>Training Mode</b></div>
+            <select class="select" id="modeSelect">
+              <option value="CLASSIFY_REPLY">Classify → Reply (best for mastery)</option>
+              <option value="CLASSIFY_ONLY">Classify Only (pure speed)</option>
+              <option value="PRESSURE">Pressure Mode (auto-speak + timer)</option>
+              <option value="REVIEW_MISSES">Review Misses (spaced repetition)</option>
+            </select>
+          </div>
+          <div>
+            <div class="small"><b>Scenario Category</b></div>
+            <select class="select" id="categorySelect">
+              <option value="MIXED">Mixed real-life (best)</option>
+              <option value="DATING">Dating / attraction</option>
+              <option value="WORK">Work / professional</option>
+              <option value="FAMILY">Family / friends</option>
+              <option value="CLIENTS">Clients / high-stakes</option>
+              <option value="NYC">NYC street / fast talk</option>
+            </select>
+          </div>
         </div>
-        <div class="mini">If you’re unsure, send <b>ONE sentence</b> and stop.</div>
+
+        <div class="divider"></div>
+
+        <div class="miniGrid">
+          <div>
+            <div class="small"><b>Speech speed</b> (fast talkers)</div>
+            <input class="range" id="rate" type="range" min="0.85" max="1.8" step="0.05" value="1.00"/>
+            <div class="small">Current: <b id="rateLabel">1.00×</b></div>
+          </div>
+          <div>
+            <div class="small"><b>Timer seconds</b> (0 = off)</div>
+            <input class="range" id="timer" type="range" min="0" max="12" step="1" value="0"/>
+            <div class="small">Current: <b id="timerLabel">Off</b></div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="switchRow">
+          <label class="switch"><input type="checkbox" id="autoSpeak"/> Auto-speak on Next</label>
+          <label class="switch"><input type="checkbox" id="autoNext"/> Auto-next after answer</label>
+          <label class="switch"><input type="checkbox" id="showHint" checked/> Show decision hint</label>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="hint">
+          <b>2-Second Method (use in real life):</b><br/>
+          1) <b>Label</b> the function (Facts/Warmth/Distance/Stress/Identity)<br/>
+          2) <b>Serve</b> it (the matching response rule)<br/>
+          3) <b>Stop</b> (one unit)
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="hint">
+          <b>Daily plan (3 minutes):</b><br/>
+          • 60 seconds Classify-Only (timer 6s)<br/>
+          • 90 seconds Pressure Mode (auto-speak ON, timer 5s)<br/>
+          • 30 seconds Review Misses (spaced repetition)
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  // ====== DATA ======
-  const FUNCTIONS = ["LOGISTICS","CONNECTION","BOUNDARY","VENTING","IDENTITY"];
+/* =========================================================
+   GOAL: Fast, seamless learning of:
+   - Step 1: classify into 5 functions (2 seconds)
+   - Step 2: hidden questions check (understand/respect/steady)
+   - Step 3: one-unit response rule (1 sentence)
+   plus spaced repetition + pressure + speech
+========================================================= */
 
-  // High-frequency real-life scenarios (text OR speech). Each has: msg, function, why, bestReply, coaching.
-  // Designed to include ambiguity so you learn fast classification under pressure.
-  const BANK = [
-    // LOGISTICS
-    {f:"LOGISTICS", msg:"What time are we meeting?", why:"They want a time. Pure coordination.", best:"3pm. I’ll confirm the location now.", coach:"Answer clearly, confirm one action, stop."},
-    {f:"LOGISTICS", msg:"Send me the address when you get a chance.", why:"Request for info.", best:"Got it — sending the address now.", coach:"No extra emotion. Just do it."},
-    {f:"LOGISTICS", msg:"I can call after work around 6.", why:"Scheduling.", best:"Perfect. I’ll be free at 6.", coach:"Confirm. Done."},
-    {f:"LOGISTICS", msg:"Do you have that document handy?", why:"Needs the item.", best:"Yes — I’ll forward it now.", coach:"Straight answer + action."},
-    {f:"LOGISTICS", msg:"Remind me what the plan is for tomorrow.", why:"They need the outline.", best:"Plan: 10am call, then we handle the rest after.", coach:"Keep it short; bullet-like."},
+const FN = ["LOGISTICS","CONNECTION","BOUNDARY","VENTING","IDENTITY"];
+const FN_NICE = {
+  LOGISTICS:"Logistics (facts/time/tasks)",
+  CONNECTION:"Connection (warmth/attention)",
+  BOUNDARY:"Boundary/Control (space/pacing)",
+  VENTING:"Venting (stress, not fixing)",
+  IDENTITY:"Identity (self-definition)"
+};
 
-    // CONNECTION
-    {f:"CONNECTION", msg:"How was your day?", why:"Seeking closeness and attention, not facts.", best:"Busy but good. How about yours?", coach:"Match warmth + return question (one hook)."},
-    {f:"CONNECTION", msg:"LOL you’re funny.", why:"Playful bid for connection.", best:"I try 😄 What are you up to tonight?", coach:"Keep it light, add a small hook."},
-    {f:"CONNECTION", msg:"You’ve been on my mind.", why:"Closeness cue.", best:"I like hearing that. What made you think of me?", coach:"Warm + one simple opener."},
-    {f:"CONNECTION", msg:"Send me a pic of what you’re doing.", why:"Wants inclusion and shared moment.", best:"Here you go. What are you doing right now?", coach:"Share + invite them back in."},
-    {f:"CONNECTION", msg:"You disappeared on me 😅", why:"Soft complaint = connection repair.", best:"Fair 😄 Today got hectic. How’s your evening going?", coach:"Light accountability + reconnect."},
+// ---- Scenario bank: designed to match your exact framework with real-life patterns.
+// Each scenario has: f, cat tags, msg, why, best, rule, badMoves (for coaching)
+const SCENARIOS = [
+  // MIXED / everyday
+  {f:"LOGISTICS", cats:["MIXED","WORK","CLIENTS"], msg:"What time is court again?", why:"They’re coordinating a fact/time.", best:"Court is 10am. I’ll email the address now.", rule:"Answer → confirm → stop", bad:["extra emotion","long explanation"]},
+  {f:"LOGISTICS", cats:["MIXED","WORK"], msg:"Send me the address when you can.", why:"Request for info/action.", best:"Got it — sending it now.", rule:"Answer → confirm → stop", bad:["small talk before sending"]},
+  {f:"LOGISTICS", cats:["MIXED","WORK"], msg:"I’ll call you after work around 6.", why:"Scheduling.", best:"Perfect. I’m free at 6.", rule:"Confirm → stop", bad:["add a story"]},
 
-    // BOUNDARY
-    {f:"BOUNDARY", msg:"I’m really busy this week.", why:"Pacing/space. Not asking for solutions.", best:"Understood.", coach:"Respect immediately. Don’t chase."},
-    {f:"BOUNDARY", msg:"No pressure, but I might not make it.", why:"Protecting space/expectations.", best:"No worries at all.", coach:"Accept it cleanly. No persuasion."},
-    {f:"BOUNDARY", msg:"I don’t like going back and forth over text.", why:"Setting communication boundary.", best:"Got it. We can talk later instead.", coach:"Respect and offer a simple alternative."},
-    {f:"BOUNDARY", msg:"I need some time to myself today.", why:"Space request.", best:"Understood. Talk when you’re ready.", coach:"Short + respectful + stop."},
-    {f:"BOUNDARY", msg:"Let’s not make this a big thing.", why:"Boundary against intensity.", best:"Agreed.", coach:"Align. Don’t escalate."},
+  {f:"CONNECTION", cats:["MIXED","DATING","FAMILY"], msg:"How was your day?", why:"Warmth/attention bid.", best:"Busy but good. How about yours?", rule:"Match energy + ONE seed", bad:["over-explaining","turning it into logistics"]},
+  {f:"CONNECTION", cats:["DATING","MIXED"], msg:"LOL you’re funny 😅", why:"Playful connection.", best:"I try 😄 What are you up to tonight?", rule:"Match tone → add one hook", bad:["seriousness","long paragraph"]},
+  {f:"CONNECTION", cats:["FAMILY","MIXED"], msg:"You’ve been on my mind.", why:"Closeness cue.", best:"I like hearing that. What made you think of me?", rule:"Warm + one hook", bad:["pressure","love-bombing"]},
 
-    // VENTING
-    {f:"VENTING", msg:"I’m exhausted. Everything is on me.", why:"Emotional release; they want to be heard.", best:"That sounds draining. Want to vent or reset for a bit?", coach:"Mirror + validate + small option (don’t fix)."},
-    {f:"VENTING", msg:"People are getting on my nerves today.", why:"Stress dump.", best:"I hear you. What happened?", coach:"Reflect + one gentle question."},
-    {f:"VENTING", msg:"I can’t catch a break lately.", why:"Venting, seeking acknowledgment.", best:"That’s a lot. What’s been the hardest part?", coach:"Validate + narrow to one piece."},
-    {f:"VENTING", msg:"I’m overwhelmed and I don’t even know where to start.", why:"They need containment, not a lecture.", best:"I hear you. Want me to help you pick the first step?", coach:"Offer one small option, not a full plan."},
-    {f:"VENTING", msg:"Nothing ever goes right for me.", why:"Emotional statement; not literal.", best:"That sounds heavy. I’m listening.", coach:"Don’t argue facts. Hold space."},
+  {f:"BOUNDARY", cats:["MIXED","DATING","WORK"], msg:"I’m really busy this week.", why:"Pacing/space.", best:"Understood.", rule:"Acknowledge → respect → stop", bad:["chasing","convincing"]},
+  {f:"BOUNDARY", cats:["DATING","MIXED"], msg:"No pressure, but I might not make it.", why:"Protecting expectations.", best:"No worries at all.", rule:"Respect it immediately", bad:["persuasion","guilt"]},
+  {f:"BOUNDARY", cats:["WORK","CLIENTS","MIXED"], msg:"I can’t talk right now.", why:"Immediate boundary.", best:"Understood.", rule:"Respect → stop", bad:["why?","follow-up questions"]},
 
-    // IDENTITY
-    {f:"IDENTITY", msg:"I’m the type of person who keeps moving forward no matter what.", why:"Self-definition. Wants respect, not pity.", best:"I respect that. You’re very deliberate about how you show up.", coach:"Mirror + respect. No pity. No fixing."},
-    {f:"IDENTITY", msg:"I don’t do drama.", why:"Value statement.", best:"I respect that.", coach:"Agree with the frame."},
-    {f:"IDENTITY", msg:"I’ve always handled things myself.", why:"Agency statement.", best:"I can see that. You’re very self-directed.", coach:"Recognize agency; don’t rescue."},
-    {f:"IDENTITY", msg:"I value loyalty above everything.", why:"Value disclosure.", best:"That’s clear. Loyalty matters to you — I respect it.", coach:"Mirror and respect; keep it simple."},
-    {f:"IDENTITY", msg:"I don’t like being pitied.", why:"Boundary + identity.", best:"Understood. I respect you — no pity.", coach:"Confirm boundary and restore dignity."},
+  {f:"VENTING", cats:["MIXED","FAMILY","CLIENTS"], msg:"I’m exhausted. Everything is on me.", why:"Stress dump; not asking for fixing.", best:"That sounds draining. Want to vent or shift topics for a bit?", rule:"Mirror → validate → tiny option", bad:["solutions lecture","your own story"]},
+  {f:"VENTING", cats:["WORK","MIXED"], msg:"People are getting on my nerves today.", why:"Venting.", best:"I hear you. What happened?", rule:"Reflect → gentle question", bad:["advice immediately"]},
+  {f:"VENTING", cats:["CLIENTS","MIXED"], msg:"I’m overwhelmed — I don’t even know where to start.", why:"Needs containment.", best:"I hear you. Want help picking the first step?", rule:"Validate → small option", bad:["ten-step plan"]},
 
-    // Ambiguous / mixed (to train speed)
-    {f:"BOUNDARY", msg:"I can’t talk right now.", why:"Boundary; immediate.", best:"Understood.", coach:"No follow-up questions."},
-    {f:"LOGISTICS", msg:"Call me when you’re free.", why:"Scheduling request disguised as connection.", best:"I’m free at 6 — I’ll call then.", coach:"Treat as logistics: propose a time."},
-    {f:"VENTING", msg:"I’m fine. Just tired.", why:"Often venting-lite; they want acknowledgment.", best:"Got you. Want to rest or talk for a minute?", coach:"Small option, no interrogation."},
-    {f:"CONNECTION", msg:"You’re quiet today.", why:"Connection check.", best:"Yeah — long day. How are you doing?", coach:"Brief + return to them."},
-    {f:"IDENTITY", msg:"I need to stay focused. My kids depend on me.", why:"Identity + responsibility.", best:"That makes sense. I respect how focused you are.", coach:"Mirror responsibility; no pity."}
-  ];
+  {f:"IDENTITY", cats:["MIXED","FAMILY","CLIENTS"], msg:"I don’t do drama.", why:"Value/identity statement.", best:"I respect that.", rule:"Mirror + respect (no pity/fixing)", bad:["debate","testing them"]},
+  {f:"IDENTITY", cats:["CLIENTS","MIXED"], msg:"I have to keep moving forward. I can’t sit down.", why:"Identity + boundary against pity.", best:"That makes sense. You’re deliberate about how you show up. I respect it.", rule:"Acknowledge → respect", bad:["pity","rescuer energy"]},
+  {f:"IDENTITY", cats:["DATING","MIXED"], msg:"I’m the kind of person who needs consistency.", why:"Self-definition; preference.", best:"I hear you. Consistency matters to you — I respect that.", rule:"Mirror + respect", bad:["overpromising"]},
 
-  // ====== STATE ======
-  let active = null;
-  let streak = 0, correct = 0, attempts = 0;
-  let times = []; // ms
-  let level = 1;
-  let timerId = null;
-  let startedAt = null;
+  // NYC / fast talk
+  {f:"LOGISTICS", cats:["NYC","MIXED"], msg:"Yo what time you pullin up?", why:"Time coordination.", best:"I’ll be there at 7.", rule:"Short. Clear. Done.", bad:["extra"]},
+  {f:"BOUNDARY", cats:["NYC","MIXED"], msg:"Nah not right now.", why:"Boundary/decline.", best:"All good.", rule:"Respect → stop", bad:["pushback"]},
+  {f:"CONNECTION", cats:["NYC","MIXED"], msg:"Aight so what you been on lately?", why:"Warmth/interest.", best:"Work’s been heavy. You?", rule:"Match + seed", bad:["monologue"]},
 
-  // Mode: classify | reply | pressure (affects feedback rules)
-  let mode = "classify";
+  // Clients / high-stakes
+  {f:"LOGISTICS", cats:["CLIENTS","WORK"], msg:"Did you file it yet?", why:"Status check.", best:"Yes — filed today. I’ll forward the confirmation.", rule:"Answer → confirm → stop", bad:["defensive tone"]},
+  {f:"VENTING", cats:["CLIENTS"], msg:"I’m scared this won’t work.", why:"Venting/fear; needs steadiness.", best:"I hear you. We’ll take it one step at a time.", rule:"Reflect → steady", bad:["guarantees","overexplaining"]},
+  {f:"BOUNDARY", cats:["CLIENTS","WORK"], msg:"Please don’t call after 8pm.", why:"Boundary.", best:"Understood. I’ll keep calls before 8.", rule:"Respect → confirm", bad:["argue"]},
 
-  // ====== DOM ======
-  const msgText = document.getElementById("msgText");
-  const resultBox = document.getElementById("resultBox");
-  const resultTitle = document.getElementById("resultTitle");
-  const resultExplain = document.getElementById("resultExplain");
-  const bestReply = document.getElementById("bestReply");
-  const yourReply = document.getElementById("yourReply");
-  const microCoach = document.getElementById("microCoach");
+  // Dating variations
+  {f:"CONNECTION", cats:["DATING"], msg:"You’re quiet today 👀", why:"Connection check.", best:"Yeah — long day. How’s your evening going?", rule:"Brief + reconnect", bad:["defensive"]},
+  {f:"BOUNDARY", cats:["DATING"], msg:"Let’s keep it simple.", why:"Boundary against intensity.", best:"Agreed.", rule:"Align → stop", bad:["more intensity"]},
+  {f:"IDENTITY", cats:["DATING"], msg:"I’m big on respect.", why:"Value statement.", best:"I respect that. Respect matters to you.", rule:"Mirror + respect", bad:["argue semantics"]},
+];
 
-  const streakEl = document.getElementById("streak");
-  const correctEl = document.getElementById("correct");
-  const attemptsEl = document.getElementById("attempts");
-  const avgTimeEl = document.getElementById("avgTime");
-  const meterFill = document.getElementById("meterFill");
+// ---- Spaced repetition buckets: store missed scenarios for review
+let missedQueue = []; // array of scenario indexes with weights
 
-  const diffLabel = document.getElementById("diffLabel");
-  const speedTag = document.getElementById("speedTag");
-  const timerTag = document.getElementById("timerTag");
+// ---- State
+let activeIdx = null;
+let step = 1; // 1=classify, 2=reply (for CLASSIFY_REPLY)
+let mode = "CLASSIFY_REPLY";
+let category = "MIXED";
 
-  const rateSlider = document.getElementById("rate");
-  const rateLabel = document.getElementById("rateLabel");
-  const timerSlider = document.getElementById("timer");
-  const timeLabel = document.getElementById("timeLabel");
+let streak = 0, correct = 0, attempts = 0, missedTimer = 0;
+let level = 1;
 
-  const modeLabel = document.getElementById("modeLabel");
-  const tabClassify = document.getElementById("tabClassify");
-  const tabReply = document.getElementById("tabReply");
-  const tabPressure = document.getElementById("tabPressure");
+let startedAt = null;
+let times = []; // ms last 30
+let timerId = null;
+let timeLeft = 0;
 
-  // ====== HELPERS ======
-  function getFocusSet(){
-    const checks = [...document.querySelectorAll(".focus")];
-    const on = checks.filter(c=>c.checked).map(c=>c.value);
-    return new Set(on.length ? on : FUNCTIONS);
-  }
+// ---- DOM
+const msgEl = document.getElementById("msg");
+const nextBtn = document.getElementById("nextBtn");
+const speakBtn = document.getElementById("speakBtn");
+const answersEl = document.getElementById("answers");
 
-  function pickScenario(){
-    const focus = getFocusSet();
-    // Level increases ambiguity: later levels sample more mixed items by random shuffle anyway.
-    const pool = BANK.filter(x=>focus.has(x.f));
-    if(!pool.length) return null;
+const resultBox = document.getElementById("resultBox");
+const resultTitle = document.getElementById("resultTitle");
+const resultWhy = document.getElementById("resultWhy");
+const bestReplyEl = document.getElementById("bestReply");
+const yourReplyEl = document.getElementById("yourReply");
+const replyCoachEl = document.getElementById("replyCoach");
 
-    // Weighted to include more ambiguous as level rises
-    // We'll treat items near end as "harder" (we placed ambiguous near end).
-    const hardStart = Math.max(0, pool.length - 8);
-    const hardPool = pool.slice(hardStart);
-    const easyPool = pool.slice(0, hardStart);
+const levelLabel = document.getElementById("levelLabel");
+const streakEl = document.getElementById("streak");
+const avgTimeEl = document.getElementById("avgTime");
+const correctEl = document.getElementById("correct");
+const attemptsEl = document.getElementById("attempts");
+const missedEl = document.getElementById("missed");
+const meterFill = document.getElementById("meterFill");
 
-    const hardChance = Math.min(0.15 + (level-1)*0.08, 0.70);
-    const useHard = Math.random() < hardChance && hardPool.length;
+const speedTag = document.getElementById("speedTag");
+const timerTag = document.getElementById("timerTag");
+const stepTag = document.getElementById("stepTag");
+const modeLabel = document.getElementById("modeLabel");
 
-    const chosenPool = useHard ? hardPool : easyPool.length ? easyPool : hardPool;
-    return chosenPool[Math.floor(Math.random()*chosenPool.length)];
-  }
+const modeSelect = document.getElementById("modeSelect");
+const categorySelect = document.getElementById("categorySelect");
+const rateSlider = document.getElementById("rate");
+const rateLabel = document.getElementById("rateLabel");
+const timerSlider = document.getElementById("timer");
+const timerLabel = document.getElementById("timerLabel");
+const autoSpeak = document.getElementById("autoSpeak");
+const autoNext = document.getElementById("autoNext");
+const showHint = document.getElementById("showHint");
 
-  function setLevel(){
-    // Level based on streak and accuracy
-    // Each 5 streak -> +1 level up to 8
-    level = Math.min(8, 1 + Math.floor(streak / 5));
-    diffLabel.textContent = `Level ${level}`;
-    // Auto tighten timer in pressure mode if user hasn't set one
-    if(mode === "pressure" && parseInt(timerSlider.value,10) === 0){
-      const auto = Math.max(3, 10 - level); // 9..3 seconds
-      timerSlider.value = auto;
-      updateTimerLabel();
-    }
-    updateSpeedTag();
-  }
+function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
 
-  function updateStats(){
-    streakEl.textContent = String(streak);
-    correctEl.textContent = String(correct);
-    attemptsEl.textContent = String(attempts);
+function effectiveSpeechRate(){
+  const base = parseFloat(rateSlider.value);
+  // level adds slight speed pressure in PRESSURE mode
+  const extra = (mode === "PRESSURE") ? (level-1)*0.05 : 0;
+  return clamp(base + extra, 0.85, 2.0);
+}
 
-    if(times.length){
-      const avg = times.reduce((a,b)=>a+b,0)/times.length;
-      avgTimeEl.textContent = `${(avg/1000).toFixed(2)}s`;
-    } else {
-      avgTimeEl.textContent = "—";
-    }
+function updateTags(){
+  speedTag.textContent = `Speed: ${effectiveSpeechRate().toFixed(2)}×`;
+  const t = parseInt(timerSlider.value,10);
+  timerTag.textContent = t === 0 ? "Timer: Off" : `Timer: ${t}s`;
+  timerTag.classList.toggle("warn", true);
 
-    // meter tracks progress toward next level (streak mod 5)
-    const prog = (streak % 5) / 5 * 100;
-    meterFill.style.width = `${prog}%`;
-  }
+  const stepText = (mode === "CLASSIFY_ONLY" || mode === "PRESSURE" || mode==="REVIEW_MISSES")
+    ? "Step: Classify"
+    : (step === 1 ? "Step 1: Classify" : "Step 2: One-Unit Reply");
+  stepTag.textContent = stepText;
 
-  function showResult(isCorrect, picked){
-    resultBox.style.display = "block";
-    resultBox.classList.remove("good","bad");
-    resultBox.classList.add(isCorrect ? "good" : "bad");
+  const modeNice = {
+    CLASSIFY_REPLY:"Classify → Reply",
+    CLASSIFY_ONLY:"Classify Only",
+    PRESSURE:"Pressure Mode",
+    REVIEW_MISSES:"Review Misses"
+  };
+  modeLabel.textContent = modeNice[mode] || mode;
+}
 
-    const fnNice = {
-      LOGISTICS:"Logistics",
-      CONNECTION:"Connection",
-      BOUNDARY:"Boundary / Control",
-      VENTING:"Venting / Emotional Release",
-      IDENTITY:"Identity Statement"
-    };
+function updateStats(){
+  streakEl.textContent = String(streak);
+  correctEl.textContent = String(correct);
+  attemptsEl.textContent = String(attempts);
+  missedEl.textContent = String(missedTimer);
 
-    if(isCorrect){
-      resultTitle.textContent = `Correct — ${fnNice[active.f]}`;
-      resultExplain.textContent = `${active.why}`;
-    } else {
-      resultTitle.textContent = `Not quite — it was ${fnNice[active.f]}`;
-      resultExplain.textContent = `Why: ${active.why} (You picked: ${fnNice[picked] || picked})`;
-    }
+  if(times.length){
+    const avg = times.reduce((a,b)=>a+b,0)/times.length;
+    avgTimeEl.textContent = `${(avg/1000).toFixed(2)}s`;
+  } else avgTimeEl.textContent = "—";
 
-    bestReply.value = active.best;
+  // level = 1 + floor(streak/5), capped 8
+  level = Math.min(8, 1 + Math.floor(streak/5));
+  levelLabel.textContent = String(level);
 
-    // Micro-coaching for user's typed reply (optional)
-    microCoach.innerHTML = `<b>Coach:</b> ${active.coach} <span class="tiny">| Real-life rule: one function, one unit, stop.</span>`;
-  }
+  // progress bar shows streak progress within current level block
+  const prog = (streak % 5)/5*100;
+  meterFill.style.width = `${prog}%`;
+}
 
-  function clearResult(){
-    resultBox.style.display = "none";
-    yourReply.value = "";
-  }
+function stopTimer(){
+  if(timerId){ clearInterval(timerId); timerId = null; }
+  timeLeft = 0;
+  updateTags();
+}
 
-  function startTimerIfNeeded(){
-    stopTimer();
-    const secs = parseInt(timerSlider.value,10);
-    if(!active || secs<=0) return;
+function startTimer(){
+  stopTimer();
+  const secs = parseInt(timerSlider.value,10);
+  if(secs <= 0) return;
 
-    timerTag.textContent = `Timer: ${secs}s`;
-    let left = secs;
-    timerId = setInterval(()=>{
-      left--;
-      timerTag.textContent = `Timer: ${left}s`;
-      if(left <= 0){
-        stopTimer();
-        // Auto mark incorrect if user didn't answer yet
-        // Only if startedAt exists and no result shown
-        if(startedAt && resultBox.style.display !== "block"){
-          // In pressure mode, missing is a fail and resets streak
-          attempts++;
-          streak = 0;
-          setLevel();
-          updateStats();
-          showResult(false, "No answer (time)");
-          startedAt = null;
-        }
-      }
-    }, 1000);
-  }
+  timeLeft = secs;
+  timerTag.textContent = `Timer: ${timeLeft}s`;
 
-  function stopTimer(){
-    if(timerId){ clearInterval(timerId); timerId = null; }
-    const secs = parseInt(timerSlider.value,10);
-    timerTag.textContent = secs>0 ? `Timer: ${secs}s` : "Timer: Off";
-  }
-
-  function updateSpeedTag(){
-    // rate slider sets base. level increases difficulty by suggesting "faster speakers".
-    const base = parseFloat(rateSlider.value);
-    const effective = Math.min(1.8, base + (mode==="pressure" ? (level-1)*0.05 : 0));
-    speedTag.textContent = `Speed: ${effective.toFixed(2)}×`;
-  }
-
-  function updateTimerLabel(){
-    const v = parseInt(timerSlider.value,10);
-    timeLabel.textContent = v === 0 ? "Off" : `${v}s`;
-    timerTag.textContent = v === 0 ? "Timer: Off" : `Timer: ${v}s`;
-  }
-
-  function speakCurrent(){
-    if(!active) return;
-    if(!("speechSynthesis" in window)) {
-      alert("Speech synthesis not supported in this browser.");
-      return;
-    }
-    // cancel any prior
-    window.speechSynthesis.cancel();
-
-    const u = new SpeechSynthesisUtterance(active.msg);
-    const base = parseFloat(rateSlider.value);
-    const effective = Math.min(1.8, base + (mode==="pressure" ? (level-1)*0.05 : 0));
-    u.rate = effective;
-    u.pitch = 1.0;
-    u.volume = 1.0;
-    window.speechSynthesis.speak(u);
-  }
-
-  function setMode(newMode){
-    mode = newMode;
-    modeLabel.textContent = newMode === "classify" ? "Classify" : (newMode === "reply" ? "Reply Builder" : "Pressure");
-    [tabClassify, tabReply, tabPressure].forEach(b=>b.classList.remove("activeTab"));
-    (newMode==="classify"?tabClassify:(newMode==="reply"?tabReply:tabPressure)).classList.add("activeTab");
-
-    // Mode behavior adjustments
-    if(newMode === "reply"){
-      // In reply mode, you still classify, but feedback emphasizes the "best one-unit reply".
-      // Timer typically off unless user wants it.
-    }
-    if(newMode === "pressure"){
-      // Encourage timer for pressure
-      if(parseInt(timerSlider.value,10)===0){
-        timerSlider.value = 8;
-        updateTimerLabel();
-      }
-    }
-    updateSpeedTag();
-    setLevel();
-  }
-
-  function nextScenario(){
-    clearResult();
-    active = pickScenario();
-    if(!active){
-      msgText.textContent = "Turn on at least one Focus Function on the right.";
-      return;
-    }
-    msgText.textContent = active.msg;
-
-    // start timer and start clock for response time
-    startedAt = performance.now();
-    startTimerIfNeeded();
-
-    // In pressure mode, auto speak to simulate fast talkers
-    if(mode === "pressure"){
-      speakCurrent();
-    }
-  }
-
-  function recordTime(){
-    if(startedAt){
-      const t = performance.now() - startedAt;
-      times.push(t);
-      // keep last 30
-      if(times.length > 30) times.shift();
-    }
-    startedAt = null;
-  }
-
-  function onPick(fPicked){
-    if(!active) return;
-
-    // Stop timer and record reaction time if answered before timeout
-    if(resultBox.style.display === "block") return; // prevent double answers
-
-    stopTimer();
-
-    attempts++;
-    const isCorrect = (fPicked === active.f);
-    if(isCorrect){
-      correct++;
-      streak++;
-    } else {
-      streak = 0;
-    }
-
-    recordTime();
-    setLevel();
-    updateStats();
-    showResult(isCorrect, fPicked);
-
-    // In reply mode, gently nudge to type your one-liner
-    if(mode === "reply"){
-      yourReply.focus();
-    }
-  }
-
-  // ====== EVENTS ======
-  document.getElementById("nextBtn").addEventListener("click", nextScenario);
-  document.getElementById("speakBtn").addEventListener("click", speakCurrent);
-
-  document.getElementById("answerButtons").addEventListener("click", (e)=>{
-    const btn = e.target.closest("button[data-f]");
-    if(!btn) return;
-    onPick(btn.dataset.f);
-  });
-
-  // Mode tabs
-  tabClassify.addEventListener("click", ()=>setMode("classify"));
-  tabReply.addEventListener("click", ()=>setMode("reply"));
-  tabPressure.addEventListener("click", ()=>setMode("pressure"));
-
-  // Sliders
-  rateSlider.addEventListener("input", ()=>{
-    rateLabel.textContent = `${parseFloat(rateSlider.value).toFixed(2)}×`;
-    updateSpeedTag();
-  });
-  timerSlider.addEventListener("input", ()=>{
-    updateTimerLabel();
-    // restart timer with new settings on the next scenario; not mid-run
-  });
-
-  // Keyboard shortcuts
-  window.addEventListener("keydown", (e)=>{
-    if(e.key === "n" || e.key === "N"){
-      nextScenario();
-    }
-    if(e.code === "Space"){
-      e.preventDefault();
-      speakCurrent();
-    }
-    if(["1","2","3","4","5"].includes(e.key)){
-      const map = {"1":"LOGISTICS","2":"CONNECTION","3":"BOUNDARY","4":"VENTING","5":"IDENTITY"};
-      onPick(map[e.key]);
-    }
-    if(e.key === "Escape"){
-      window.speechSynthesis && window.speechSynthesis.cancel();
+  timerId = setInterval(()=>{
+    timeLeft--;
+    timerTag.textContent = `Timer: ${timeLeft}s`;
+    if(timeLeft <= 0){
       stopTimer();
+      // if no result yet, count as miss
+      if(resultBox.style.display !== "block" && startedAt){
+        missedTimer++;
+        attempts++;
+        streak = 0;
+        pushMiss(activeIdx);
+        showResult(false, null, true);
+        startedAt = null;
+        updateStats();
+      }
     }
+  }, 1000);
+}
+
+function speakCurrent(){
+  if(activeIdx === null) return;
+  if(!("speechSynthesis" in window)) return;
+  const s = SCENARIOS[activeIdx];
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(s.msg);
+  u.rate = effectiveSpeechRate();
+  u.pitch = 1.0;
+  u.volume = 1.0;
+  window.speechSynthesis.speak(u);
+}
+
+function filterPool(){
+  const cat = categorySelect.value;
+  if(cat === "MIXED") return SCENARIOS.map((_,i)=>i);
+  const pool = [];
+  for(let i=0;i<SCENARIOS.length;i++){
+    if(SCENARIOS[i].cats.includes(cat) || SCENARIOS[i].cats.includes("MIXED")) pool.push(i);
+  }
+  return pool.length ? pool : SCENARIOS.map((_,i)=>i);
+}
+
+function pickFromPool(pool){
+  // Increased ambiguity at higher level: bias toward items tagged MIXED/NYC/CLIENTS and ones with shorter phrasing.
+  // Simple weighting: base weight 1, add for shorter msg (hard), add for NYC in higher levels.
+  const weights = pool.map(idx=>{
+    const s = SCENARIOS[idx];
+    let w = 1;
+    const len = s.msg.length;
+    if(len < 28) w += 0.5;     // short messages can be ambiguous
+    if(len < 18) w += 0.6;
+    if(level >= 4 && s.cats.includes("NYC")) w += 0.7;
+    if(level >= 5 && s.cats.includes("CLIENTS")) w += 0.4;
+    if(mode === "REVIEW_MISSES") w += 0.2;
+    return w;
   });
 
-  // Focus checkboxes: if all off, auto warn in next
-  document.querySelectorAll(".focus").forEach(c=>{
-    c.addEventListener("change", ()=>{
-      // If current scenario is now excluded, just keep but next will change
-    });
-  });
+  // Weighted random
+  const total = weights.reduce((a,b)=>a+b,0);
+  let r = Math.random()*total;
+  for(let i=0;i<pool.length;i++){
+    r -= weights[i];
+    if(r <= 0) return pool[i];
+  }
+  return pool[pool.length-1];
+}
 
-  // Improve typed reply coaching (optional)
-  yourReply.addEventListener("keydown", (e)=>{
-    if(e.key === "Enter"){
-      // quick coaching feedback about one-unit rule
-      const txt = yourReply.value.trim();
-      if(!txt) return;
-      const tooLong = txt.split(/\s+/).length > 18;
-      const hasFixingWords = /\b(should|you need to|you have to|do this|here's what you do|listen)\b/i.test(txt);
-      const hasPity = /\b(sorry|poor you|that’s terrible|you didn’t deserve)\b/i.test(txt);
-
-      let notes = [];
-      if(tooLong) notes.push("Shorten it (one unit, one sentence).");
-      if(hasFixingWords && active && active.f === "VENTING") notes.push("For venting: don’t fix — reflect + validate + option.");
-      if(hasPity && active && (active.f === "IDENTITY" || active.f === "BOUNDARY")) notes.push("Avoid pity/rescuing language — mirror + respect.");
-      if(!notes.length) notes.push("Good — one-unit tone. Stop there.");
-
-      microCoach.innerHTML = `<b>Coach:</b> ${active ? active.coach : ""}<br/><span class="tiny"><b>Your reply check:</b> ${notes.join(" ")}</span>`;
+function pickScenario(){
+  // In REVIEW_MISSES, prioritize missedQueue
+  if(mode === "REVIEW_MISSES" && missedQueue.length){
+    // Weighted by count
+    const total = missedQueue.reduce((a,x)=>a+x.w,0);
+    let r = Math.random()*total;
+    for(const item of missedQueue){
+      r -= item.w;
+      if(r <= 0) return item.idx;
     }
-  });
+    return missedQueue[0].idx;
+  }
 
-  // Init UI labels
-  rateLabel.textContent = `${parseFloat(rateSlider.value).toFixed(2)}×`;
-  updateTimerLabel();
-  updateSpeedTag();
+  const pool = filterPool();
+  return pickFromPool(pool);
+}
+
+function pushMiss(idx){
+  if(idx === null) return;
+  const found = missedQueue.find(x=>x.idx===idx);
+  if(found) found.w = Math.min(found.w + 1, 6);
+  else missedQueue.push({idx, w:2});
+  // Keep queue small
+  if(missedQueue.length > 25) missedQueue.shift();
+}
+
+function clearUIForNew(){
+  resultBox.style.display = "none";
+  yourReplyEl.value = "";
+  replyCoachEl.innerHTML = `<b>One-Unit Rule:</b> 1 sentence acknowledgment OR 1 sentence plan OR 1 sentence respect. Stop.`;
+}
+
+function nextScenario(){
+  stopTimer();
+  clearUIForNew();
+  activeIdx = pickScenario();
+  const s = SCENARIOS[activeIdx];
+  msgEl.textContent = s.msg;
+
+  // Step handling
+  if(mode === "CLASSIFY_REPLY"){
+    step = 1;
+  } else {
+    step = 1;
+  }
+  updateTags();
+
+  startedAt = performance.now();
+  startTimer();
+
+  if(autoSpeak.checked || mode === "PRESSURE"){
+    // In pressure mode, always auto-speak, and also suggest higher speed naturally via effectiveSpeechRate()
+    speakCurrent();
+  }
+}
+
+function recordTime(){
+  if(startedAt){
+    const t = performance.now() - startedAt;
+    times.push(t);
+    if(times.length > 30) times.shift();
+  }
+  startedAt = null;
+}
+
+function showResult(isCorrect, pickedF, timedOut=false){
+  const s = SCENARIOS[activeIdx];
+
+  resultBox.style.display = "block";
+  resultBox.classList.remove("good","bad");
+  resultBox.classList.add(isCorrect ? "good" : "bad");
+
+  const pickedNice = pickedF ? FN_NICE[pickedF] : "No answer";
+
+  if(isCorrect){
+    resultTitle.textContent = `Correct — ${FN_NICE[s.f]}`;
+    resultWhy.textContent = s.why;
+  } else {
+    resultTitle.textContent = timedOut ? `Time’s up — it was ${FN_NICE[s.f]}` : `Not quite — it was ${FN_NICE[s.f]}`;
+    resultWhy.textContent = `Why: ${s.why}${timedOut ? "" : ` (You picked: ${pickedNice})`}`;
+  }
+
+  bestReplyEl.value = s.best;
+
+  // If hint off, keep it minimal
+  if(!showHint.checked){
+    resultWhy.textContent = isCorrect ? "" : resultWhy.textContent;
+  }
+
+  // If the user makes a common mistake, coach it
+  let coach = `<b>Serve the function:</b> <i>${s.rule}</i>. `;
+  if(!isCorrect){
+    if(s.f === "VENTING") coach += `Don’t fix. Mirror + validate + tiny option. `;
+    if(s.f === "BOUNDARY") coach += `Don’t chase or persuade. Respect and stop. `;
+    if(s.f === "IDENTITY") coach += `No pity/rescue. Mirror + respect. `;
+    if(s.f === "LOGISTICS") coach += `No extra emotion. Short and done. `;
+    if(s.f === "CONNECTION") coach += `Match warmth + add ONE seed. `;
+  }
+  replyCoachEl.innerHTML = coach + `<span style="color:var(--muted)"><br/><b>Hidden Questions:</b> Understand? Respect? Steady?</span>`;
+}
+
+function handlePick(fPicked){
+  if(activeIdx === null) return;
+  const s = SCENARIOS[activeIdx];
+
+  // if already showing result, ignore
+  if(resultBox.style.display === "block") return;
+
+  stopTimer();
+  attempts++;
+
+  // Step behavior:
+  if(mode === "CLASSIFY_REPLY"){
+    if(step === 1){
+      // classify step
+      const isCorrect = (fPicked === s.f);
+      if(isCorrect){ correct++; streak++; }
+      else { streak = 0; pushMiss(activeIdx); }
+      recordTime();
+      showResult(isCorrect, fPicked, false);
+
+      // move to reply step regardless (to build the response reflex)
+      step = 2;
+      stepTag.textContent = "Step 2: One-Unit Reply";
+      // Focus cursor for reply
+      yourReplyEl.focus();
+
+      updateStats();
+      updateTags();
+      return;
+    }
+    // step 2: classification buttons still usable, but we treat as "next" suggestion
+    // If they press a function button again, just go next (keeps it seamless)
+    if(autoNext.checked) setTimeout(nextScenario, 350);
+    return;
+  }
+
+  // CLASSIFY_ONLY / PRESSURE / REVIEW_MISSES:
+  const isCorrect = (fPicked === s.f);
+  if(isCorrect){ correct++; streak++; }
+  else { streak = 0; pushMiss(activeIdx); }
+  recordTime();
+  showResult(isCorrect, fPicked, false);
   updateStats();
-  setMode("classify");
+  updateTags();
+
+  if(autoNext.checked) setTimeout(nextScenario, 450);
+}
+
+function checkTypedReply(){
+  if(activeIdx === null) return;
+  const s = SCENARIOS[activeIdx];
+  const txt = yourReplyEl.value.trim();
+  if(!txt) return;
+
+  // One-unit heuristics: one sentence, short, no fixing when venting, no pity when identity
+  const words = txt.split(/\s+/).filter(Boolean);
+  const tooLong = words.length > 18;
+
+  // Fixing / advising cues
+  const fixing = /\b(should|you need to|you have to|do this|here's what you do|listen|advice)\b/i.test(txt);
+
+  // Pity cues
+  const pity = /\b(sorry|poor you|that’s terrible|you didn’t deserve|i feel so bad)\b/i.test(txt);
+
+  // Emotional escalation cues (for boundary)
+  const chase = /\b(please|just one|why won’t you|answer me|are you mad)\b/i.test(txt);
+
+  let notes = [];
+  if(tooLong) notes.push("Shorten it. One unit, one sentence.");
+  if(s.f === "VENTING" && fixing) notes.push("Venting → don’t fix. Mirror + validate + tiny option.");
+  if((s.f === "IDENTITY" || s.f === "BOUNDARY") && pity) notes.push("Avoid pity/rescue. Mirror + respect.");
+  if(s.f === "BOUNDARY" && chase) notes.push("Don’t chase boundaries. Respect and stop.");
+  if(s.f === "LOGISTICS" && words.length > 12) notes.push("Logistics → shorter and purely factual.");
+
+  if(!notes.length) notes.push("Good. One-unit tone. Stop there.");
+
+  replyCoachEl.innerHTML =
+    `<b>Reply check:</b> ${notes.join(" ")}<br/><span style="color:var(--muted)"><b>Target style:</b> ${s.rule}. Hidden questions: Understand? Respect? Steady?</span>`;
+
+  // Auto-next in CLASSIFY_REPLY after reply check (optional)
+  if(mode === "CLASSIFY_REPLY" && autoNext.checked){
+    setTimeout(nextScenario, 600);
+  }
+}
+
+function setMode(newMode){
+  mode = newMode;
+  // Pressure mode defaults:
+  if(mode === "PRESSURE"){
+    autoSpeak.checked = true;
+    if(parseInt(timerSlider.value,10) === 0) timerSlider.value = 6;
+  }
+  updateTags();
+}
+
+function syncUI(){
+  rateLabel.textContent = `${effectiveSpeechRate().toFixed(2)}×`;
+  const t = parseInt(timerSlider.value,10);
+  timerLabel.textContent = t === 0 ? "Off" : `${t}s`;
+  updateTags();
+  updateStats();
+}
+
+// ---- Events
+nextBtn.addEventListener("click", nextScenario);
+speakBtn.addEventListener("click", speakCurrent);
+
+answersEl.addEventListener("click", (e)=>{
+  const btn = e.target.closest("button[data-f]");
+  if(!btn) return;
+  handlePick(btn.dataset.f);
+});
+
+// Mode selection
+modeSelect.addEventListener("change", ()=>{
+  const v = modeSelect.value;
+  setMode(v);
+  mode = v;
+  // When switching modes, reset step
+  step = 1;
+  clearUIForNew();
+  stopTimer();
+  updateTags();
+});
+
+// Category selection
+categorySelect.addEventListener("change", ()=>{
+  category = categorySelect.value;
+});
+
+// Sliders
+rateSlider.addEventListener("input", ()=>{
+  rateLabel.textContent = `${effectiveSpeechRate().toFixed(2)}×`;
+  updateTags();
+});
+timerSlider.addEventListener("input", ()=>{
+  const t = parseInt(timerSlider.value,10);
+  timerLabel.textContent = t === 0 ? "Off" : `${t}s`;
+  updateTags();
+});
+
+// Reply check on Enter
+yourReplyEl.addEventListener("keydown", (e)=>{
+  if(e.key === "Enter"){
+    checkTypedReply();
+  }
+});
+
+// Keyboard shortcuts
+window.addEventListener("keydown", (e)=>{
+  // avoid typing interference
+  const isTyping = document.activeElement === yourReplyEl;
+  if(isTyping && !["Enter","Escape"].includes(e.key)) return;
+
+  if(e.key === "n" || e.key === "N"){ nextScenario(); }
+  if(e.code === "Space"){
+    e.preventDefault();
+    speakCurrent();
+  }
+  if(e.key === "r" || e.key === "R"){ speakCurrent(); }
+  if(["1","2","3","4","5"].includes(e.key)){
+    const map = {"1":"LOGISTICS","2":"CONNECTION","3":"BOUNDARY","4":"VENTING","5":"IDENTITY"};
+    handlePick(map[e.key]);
+  }
+  if(e.key === "Escape"){
+    window.speechSynthesis && window.speechSynthesis.cancel();
+    stopTimer();
+  }
+});
+
+// Init
+mode = modeSelect.value;
+category = categorySelect.value;
+syncUI();
 </script>
 </body>
 </html>
